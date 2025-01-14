@@ -1,11 +1,11 @@
 CONTAINER_ENGINE ?= docker
-REDIS_VERSION ?= v7.0.13
-REDIS_SENTINEL_VERSION ?= v7.0.13
-REDIS_EXPORTER_VERSION ?= v1.61.0
+REDIS_VERSION ?= 7.4.0
+REDIS_SENTINEL_VERSION ?= 7.4.0
+REDIS_EXPORTER_VERSION ?= v1.67.0
 
-IMG ?= quay.io/opstree/redis:$(REDIS_VERSION)
-EXPORTER_IMG ?= quay.io/opstree/redis-exporter:$(REDIS_EXPORTER_VERSION)
-SENTINEL_IMG ?= quay.io/opstree/redis-sentinel:$(REDIS_SENTINEL_VERSION)
+IMG ?= docker.io/jmunschnab/redis:$(REDIS_VERSION)
+EXPORTER_IMG ?= docker.io/jmunschnab/redis-exporter:$(REDIS_EXPORTER_VERSION)
+SENTINEL_IMG ?= docker.io/jmunschnab/redis-sentinel:$(REDIS_SENTINEL_VERSION)
 
 build-redis:
 	${CONTAINER_ENGINE} build -t ${IMG} -f Dockerfile --build-arg REDIS_VERSION=${REDIS_VERSION} .
@@ -26,14 +26,14 @@ push-sentinel :
 	${CONTAINER_ENGINE} push ${SENTINEL_IMG}
 
 setup-standalone-server-compose:
-	docker-compose -f docker-compose-standalone.yaml up -d
+	docker compose -f docker-compose-standalone.yaml up -d
 
 setup-cluster-compose:
-	docker-compose -f docker-compose.yaml up -d
-	docker-compose exec redis-master-3 /bin/bash -c "/usr/bin/setupMasterSlave.sh"
-	docker-compose exec redis-slave-1 /bin/bash -c "/usr/bin/setupMasterSlave.sh"
-	docker-compose exec redis-slave-2 /bin/bash -c "/usr/bin/setupMasterSlave.sh"
-	docker-compose exec redis-slave-3 /bin/bash -c "/usr/bin/setupMasterSlave.sh"
+	docker compose -f docker-compose.yaml up -d
+	docker compose exec redis-master-3 /bin/bash -c "/usr/bin/setupMasterSlave.sh"
+	docker compose exec redis-slave-1 /bin/bash -c "/usr/bin/setupMasterSlave.sh"
+	docker compose exec redis-slave-2 /bin/bash -c "/usr/bin/setupMasterSlave.sh"
+	docker compose exec redis-slave-3 /bin/bash -c "/usr/bin/setupMasterSlave.sh"
 
 docker-create:
 	docker buildx create --platform "linux/amd64,linux/arm64" --use

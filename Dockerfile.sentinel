@@ -29,25 +29,20 @@ RUN VERSION=$(echo ${REDIS_SENTINEL_VERSION} | sed -e "s/^v//g"); \
     export BUILD_TLS=yes; \
     make -C redis-${VERSION} all; \
     make -C redis-${VERSION} install
+# Use the official Redis Stack Server image as the base image
+FROM redis/redis-stack-server:7.4.0-v2-arm64
 
-FROM alpine:3.19
+LABEL maintainer="Opstree Solutions"
 
 ARG TARGETARCH
 
-ENV SENTINEL_PORT=26379
-
 LABEL version=1.0 \
       arch=$TARGETARCH \
-      description="A production grade performance tuned redis docker image created by Opstree Solutions"
+      description="A production grade performance tuned Redis Stack Docker image created by Opstree Solutions"
 
-
-COPY --from=builder /usr/local/bin/redis-cli /usr/local/bin/redis-cli
-COPY --from=builder /usr/local/bin/redis-sentinel /usr/local/bin/redis-sentinel
-
-RUN apk update && apk upgrade
-
-RUN addgroup -S -g 1000 redis && adduser -S -G redis -u 1000 redis && \
-    apk add --no-cache bash
+RUN addgroup --system redis && adduser --system --ingroup redis --uid 1000 redis && \
+    apt-get update && apt-get install -y bash && \
+    rm -rf /var/lib/apt/lists/*
 
 COPY sentinel.conf /etc/redis/sentinel.conf
 
