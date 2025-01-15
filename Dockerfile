@@ -1,5 +1,5 @@
 # Use the official Redis Stack Server image as the base image
-FROM redis/redis-stack-server:7.4.0-v2-arm64
+FROM redis/redis-stack-server:7.4.0-v2-x86_64
 
 LABEL maintainer="Opstree Solutions"
 
