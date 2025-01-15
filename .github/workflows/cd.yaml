@@ -14,7 +14,7 @@ jobs:
     environment: build
     strategy:
       matrix:
-        version: [v6.2.17, v7.0.15, v7.2.7, latest]
+        version: [v7.0.15, v7.2.7, latest]
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -34,7 +34,7 @@ jobs:
         with:
           context: .
           file: Dockerfile
-          platforms: linux/amd64,linux/arm64
+          platforms: linux/amd64
           push: true
           build-args: |
             REDIS_VERSION=${{ matrix.version }}
@@ -44,7 +44,7 @@ jobs:
     environment: build
     strategy:
       matrix:
-        version: [v6.2.14, v7.0.15, v7.2.6, latest]
+        version: [v7.0.15, v7.2.6, latest]
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -64,7 +64,7 @@ jobs:
         with:
           context: .
           file: Dockerfile.sentinel
-          platforms: linux/amd64,linux/arm64
+          platforms: linux/amd64
           push: true
           build-args: |
             REDIS_SENTINEL_VERSION=${{ matrix.version }}
@@ -94,7 +94,7 @@ jobs:
         with:
           context: .
           file: Dockerfile.exporter
-          platforms: linux/amd64,linux/arm64
+          platforms: linux/amd64
           push: true
           build-args: |
             REDIS_EXPORTER_VERSION=${{ matrix.version }}
