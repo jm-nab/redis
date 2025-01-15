@@ -14,7 +14,7 @@ jobs:
     environment: build
     strategy:
       matrix:
-        version: [v6.2.17, v7.0.15, v7.2.7, latest2]
+        version: [v6.2.17, v7.0.15, v7.2.7, latest3]
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -44,7 +44,7 @@ jobs:
     environment: build
     strategy:
       matrix:
-        version: [v6.2.14, v7.0.15, v7.2.6, latest2]
+        version: [v6.2.14, v7.0.15, v7.2.6, latest3]
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
