@@ -30,7 +30,7 @@ RUN VERSION=$(echo ${REDIS_SENTINEL_VERSION} | sed -e "s/^v//g"); \
     make -C redis-${VERSION} all; \
     make -C redis-${VERSION} install
 # Use the official Redis Stack Server image as the base image
-FROM redis/redis-stack-server:7.4.0-v2-arm64
+FROM redis/redis-stack-server:7.4.0-v2
 
 LABEL maintainer="Opstree Solutions"
 
